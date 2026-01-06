@@ -1,7 +1,7 @@
 package fr.eni.demo.bll;
 
 import fr.eni.demo.bo.Employe;
-import fr.eni.demo.dal.EmployeDAO;
+import fr.eni.demo.dal.EmployeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @Service
 public class EmployeServiceImpl implements EmployeService {
-    private EmployeDAO employeDAO;
+    private EmployeRepository  employeRepository;
 
     @Override
     public void ajouter(Employe employe) {
@@ -25,12 +25,13 @@ public class EmployeServiceImpl implements EmployeService {
         validerChaineNonNulle(employe.getPrenom(), "Vous devez renseigner le prénom");
         validerChaineNonNulle(employe.getEmail(), "Vous devez renseigner un email");
 
-        employeDAO.create(employe);
+        employeRepository.save(employe);
     }
 
     @Override
     public List<Employe> chargerTousEmployes() {
-        return employeDAO.findAll();
+
+        return employeRepository.findAll();
     }
 
     private void validerChaineNonNulle(String chaine, String msgErreur) {
@@ -41,11 +42,10 @@ public class EmployeServiceImpl implements EmployeService {
     private void validerImmatriculation(Employe employe) {
         // Valider que l'immatriculation n'est pas nule ou vide
         validerChaineNonNulle(employe.getImmatriculation(), "L'immatriculation n'a pas été renseignée");
-        // Immatriculation doit être unique
-        Optional<Employe> optionalEmploye = employeDAO.findByImmatriculation(employe.getImmatriculation());
-        if (optionalEmploye.isPresent()) {
-            throw new RuntimeException("L'immatriculation doit être unique");
-        }
+        // TODO Immatriculation doit être unique
+
+           // throw new RuntimeException("L'immatriculation doit être unique");
+
     }
 
 }

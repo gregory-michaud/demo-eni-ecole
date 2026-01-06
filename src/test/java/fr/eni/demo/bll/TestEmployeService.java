@@ -1,11 +1,8 @@
 package fr.eni.demo.bll;
 
 import fr.eni.demo.bo.Employe;
-import fr.eni.demo.dal.EmployeDAO;
-import org.junit.jupiter.api.BeforeEach;
+import fr.eni.demo.dal.EmployeRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -25,7 +22,7 @@ public class TestEmployeService {
     private EmployeService employeService;
 
     @MockitoBean// Injection d'un Mock du EmployeDAO
-    private EmployeDAO employeRepository;
+    private EmployeRepository employeRepository;
 
 
     @Test
@@ -42,13 +39,13 @@ public class TestEmployeService {
                 .build();
 
         //Définir le comportement du Repository mocké
-        when(employeRepository.read(id)).thenReturn(Optional.of(employe));
+        when(employeRepository.findById(id)).thenReturn(Optional.of(employe));
 
         //Comportemnet à valider
         employeService.ajouter(employe);
 
         // Vérification de l'ajout dans la liste des employés
-        Optional<Employe> employeDB = employeRepository.read(id);
+        Optional<Employe> employeDB = employeRepository.findById(id);
         assertTrue(employeDB.isPresent());
         assertThat(employe.getImmatriculation()).isEqualTo(employeDB.get().getImmatriculation());
         assertThat(employe.getEmail()).isEqualTo(employeDB.get().getEmail());
@@ -104,8 +101,8 @@ public class TestEmployeService {
                 .build();
         //employeService.ajouter(employe1);
 
-        //Définir le comportement du Repository avec findByImmatriculation
-        when(employeRepository.findByImmatriculation("ENI_Ecole_012892")).thenReturn(Optional.of(employe1));
+        // TODO Définir le comportement du Repository avec findByImmatriculation
+
 
         Employe employe2 = Employe
                 .builder()
