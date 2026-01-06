@@ -1,7 +1,10 @@
 package fr.eni.demo.bll;
 
+import fr.eni.demo.bo.Adresse;
 import fr.eni.demo.bo.Employe;
+import fr.eni.demo.dal.AdresseRepository;
 import fr.eni.demo.dal.EmployeRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,7 @@ import java.util.Optional;
 @Service
 public class EmployeServiceImpl implements EmployeService {
     private EmployeRepository  employeRepository;
+    private AdresseRepository  adresseRepository;
 
     @Override
     public void ajouter(Employe employe) {
@@ -26,6 +30,20 @@ public class EmployeServiceImpl implements EmployeService {
         validerChaineNonNulle(employe.getEmail(), "Vous devez renseigner un email");
 
         employeRepository.save(employe);
+    }
+
+    @Override
+    @Transactional
+    public void ajouter(Employe employe, Adresse adresse) {
+
+        ajouter(employe);
+
+        if(adresse == null) {
+            throw new RuntimeException("L'adresse n'existe pas");
+        }
+
+        adresseRepository.save(adresse);
+
     }
 
     @Override

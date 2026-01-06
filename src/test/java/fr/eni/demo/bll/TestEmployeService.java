@@ -1,6 +1,8 @@
 package fr.eni.demo.bll;
 
+import fr.eni.demo.bo.Adresse;
 import fr.eni.demo.bo.Employe;
+import fr.eni.demo.dal.AdresseRepository;
 import fr.eni.demo.dal.EmployeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class TestEmployeService {
 
     @MockitoBean// Injection d'un Mock du EmployeDAO
     private EmployeRepository employeRepository;
+
+    @Autowired
+    private AdresseRepository adresseRepository;
 
 
     @Test
@@ -155,5 +160,77 @@ public class TestEmployeService {
     }
 
 
+    @Test
+    void test01_ajouter_employe_adresse() {
+        int id = 1;
+
+        Employe employe = Employe
+                .builder()
+                .id(id)
+                .nom("BAILLE")
+                .prenom("Anne-Lise")
+                .email("abaille@campus-eni.fr")
+                .immatriculation("ENI_Ecole_012892")
+                .build();
+
+        Adresse adresse = Adresse
+                .builder()
+                .rue("rue de la Nantes")
+                .codePostal("44000")
+                .ville("Nantes")
+                .build();
+
+        //Définir le comportement du Repository mocké
+        when(employeRepository.findById(id)).thenReturn(Optional.of(employe));
+
+        //Comportemnet à valider
+        employeService.ajouter(employe, adresse);
+
+        // Vérification de l'ajout dans la liste des employés
+        Optional<Employe> employeDB = employeRepository.findById(id);
+        assertTrue(employeDB.isPresent());
+        assertThat(employe.getImmatriculation()).isEqualTo(employeDB.get().getImmatriculation());
+        assertThat(employe.getEmail()).isEqualTo(employeDB.get().getEmail());
+        assertThat(employe.getNom()).isEqualTo(employeDB.get().getNom());
+        assertThat(employe.getPrenom()).isEqualTo(employeDB.get().getPrenom());
+        assertThat(employe.getNumDom()).isEqualTo(employeDB.get().getNumDom());
+        assertThat(employe.getNumPortable()).isEqualTo(employeDB.get().getNumPortable());
+
+
+        Optional<Adresse> optionalAdresse = adresseRepository.findById(adresse.getId());
+        assertTrue(optionalAdresse.isPresent());
+        assertThat(optionalAdresse.get().getId()).isGreaterThan(0);
+
+    }
+
+    @Test
+    void test01_ajouter_employe_adresse_rollback() {
+
+        Employe employe = Employe
+                .builder()
+                .nom("BAILLE")
+                .prenom("Anne-Lise")
+                .email("abaille@campus-eni.fr")
+                .immatriculation("ENI_Ecole_012892")
+                .build();
+
+        Adresse adresse = Adresse
+                .builder()
+                .rue("rue de la Nantes")
+                .codePostal("44000")
+                .build();
+
+
+        //Comportement à valider
+        assertThrows(RuntimeException.class, ()->employeService.ajouter(employe, adresse)) ;
+
+        // Vérification de l'ajout dans la liste des employés
+        List<Employe> employesDB = employeRepository.findAll();
+        assertThat(employesDB).isEmpty();
+
+        List<Adresse> listeAdresses = adresseRepository.findAll();
+        assertThat(listeAdresses).isEmpty();
+
+    }
 
 }
