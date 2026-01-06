@@ -2,12 +2,13 @@ package fr.eni.demo.dal;
 
 import fr.eni.demo.bo.Employe;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Repository
 public class EmployeDAOImpl implements EmployeDAO {
 
     private List<Employe> employes = new ArrayList<>();
