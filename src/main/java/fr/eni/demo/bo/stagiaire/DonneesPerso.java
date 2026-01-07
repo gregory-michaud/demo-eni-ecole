@@ -35,7 +35,7 @@ public class DonneesPerso {
     @Column(name = "PERSONAL_EMAIL",  nullable = false, unique = true, length = 255)
     private String emailPersonnel;
 
-    @OneToOne(mappedBy = "donneesPerso")
+    @OneToOne(mappedBy = "donneesPerso", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private EtudiantEni etudiantEni;
