@@ -26,7 +26,7 @@ public class Promo {
     @Column(name = "NAME",  nullable = false, unique = true,  length = 12)
     private String nom;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch =  FetchType.LAZY)
-    @JoinColumn(name = "CLASS_ID")
+    @OneToMany(mappedBy = "promo", cascade = CascadeType.ALL, orphanRemoval = true, fetch =  FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
     private List<EtudiantEni> etudiants;
 }

@@ -25,4 +25,9 @@ public class EtudiantEni {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "DATA_ID")
     private DonneesPerso donneesPerso;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "CLASS_ID")
+    @ToString.Exclude
+    private Promo promo;
 }
