@@ -43,4 +43,8 @@ public class Employe {
     @JoinColumn(name = "ADDRESS_ID")
     private Adresse adresse;
 
+    @ManyToOne
+    @JoinColumn(name = "CIVILITY_ID")
+    private Civilite civilite;
+
 }
