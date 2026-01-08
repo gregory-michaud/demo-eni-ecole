@@ -1,7 +1,9 @@
 package fr.eni.demo.bo.formation;
 
+import fr.eni.demo.bo.Employe;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -11,36 +13,15 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(of = {"immatriculation"})
-@ToString(exclude = {"coursDispenses"})
-@Builder
+@ToString(callSuper = true)
+@SuperBuilder
 
 @Entity
+//@DiscriminatorValue(value = "F")
 @Table(name = "TRAINER")
-public class Formateur {
+public class Formateur extends Employe  {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "EMPLOYE_ID")
-    private Integer id;
 
-    @Column(name = "LAST_NAME",  nullable = false,  length = 90)
-    private String nom;
-
-    @Column(name = "FIRST_NAME",   nullable = false,  length = 150)
-    private String prenom;
-
-    @Column(name = "EMAIL", nullable = false, unique = true,  length = 255)
-    private String email;
-
-    @Column(name = "EMPLOYE_REGISTRATION", nullable = false, unique = true,  length = 100)
-    private String immatriculation;
-
-    @Column(name = "HOME_PHONE_NUMBER", length = 12)
-    private String numDom;
-
-    @Column(name = "CELL_PHONE_NUMBER", length = 12)
-    private String numPortable;
 
     @Column(name = "COMPUTER_SCIENCE_COURSE", length = 150)
     private String filiere;
@@ -50,6 +31,7 @@ public class Formateur {
                joinColumns=@JoinColumn(name = "EMPLOYE_ID"),
                 inverseJoinColumns = @JoinColumn(name = "COURSE_ID")
     )
+    @ToString.Exclude
     private @Builder.Default List<Cours> coursDispenses = new ArrayList<>();
 
 

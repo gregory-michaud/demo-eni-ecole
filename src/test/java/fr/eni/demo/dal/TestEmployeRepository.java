@@ -1,11 +1,13 @@
 package fr.eni.demo.dal;
 
 import fr.eni.demo.bo.Employe;
+import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,11 +37,15 @@ public class TestEmployeRepository {
                 .numDom("0245789865")
                 .build();
 
-        Employe employeSave = employeRepository.save(employee);
 
-        log.info(employeSave.toString());
+            Employe employeSave = employeRepository.save(employee);
+            log.info(employeSave.toString());
 
-        assertThat(employeSave.getId()).isGreaterThan(0);
+            assertThat(employeSave.getId()).isGreaterThan(0);
+
+
+
+
     }
 
     @Test
@@ -156,6 +162,8 @@ public class TestEmployeRepository {
         assertThat(listeEmployes.size()).isEqualTo(2);
 
     }
+
+
 
 
 

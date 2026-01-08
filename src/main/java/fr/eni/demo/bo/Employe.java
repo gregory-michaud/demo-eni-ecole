@@ -2,6 +2,7 @@ package fr.eni.demo.bo;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 //@Data
 @NoArgsConstructor
@@ -10,13 +11,19 @@ import lombok.*;
 @Setter
 @ToString
 @EqualsAndHashCode(of = {"immatriculation"})
-@Builder
+@SuperBuilder
 
 @Entity
 @Table(name = "EMPLOYEE")
+/*@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "DISCR")
+@DiscriminatorValue(value = "E")*/
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Employe {
 
     @Id
+    //@GeneratedValue(strategy = GenerationType.TABLE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EMPLOYEE_ID")
     private Integer id;
