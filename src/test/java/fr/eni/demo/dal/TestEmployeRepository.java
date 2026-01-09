@@ -165,8 +165,80 @@ public class TestEmployeRepository {
 
     }
 
+    @Test
+    public void test_findByImmatriculation(){
+
+        Employe employee = Employe
+                .builder()
+                .nom("nomTEST")
+                .prenom("prenomTEST")
+                .email("nTest@campus-eni.fr")
+                .immatriculation("TEST123")
+                .numDom("0245789865")
+                .build();
+
+        Employe employee2 = Employe
+                .builder()
+                .nom("nomTEST2")
+                .prenom("prenomTEST2")
+                .email("nTest2@campus-eni.fr")
+                .immatriculation("TEST1232")
+                .numDom("0245789862")
+                .build();
 
 
+
+        entityManager.persist(employee);
+        entityManager.persist(employee2);
+        entityManager.flush();
+
+        log.info(employee.toString());
+        log.info(employee2.toString());
+
+        Employe employeBDD = employeRepository.findByImmatriculation("TEST123");
+
+        assertThat(employeBDD).isNotNull();
+        assertThat(employeBDD).isEqualTo(employee);
+
+    }
+
+
+    @Test
+    public void test_findByEmailJPQL(){
+
+        Employe employee = Employe
+                .builder()
+                .nom("nomTEST")
+                .prenom("prenomTEST")
+                .email("nTest@campus-eni.fr")
+                .immatriculation("TEST123")
+                .numDom("0245789865")
+                .build();
+
+        Employe employee2 = Employe
+                .builder()
+                .nom("nomTEST2")
+                .prenom("prenomTEST2")
+                .email("nTest2@campus-eni.fr")
+                .immatriculation("TEST1232")
+                .numDom("0245789862")
+                .build();
+
+
+
+        entityManager.persist(employee);
+        entityManager.persist(employee2);
+        entityManager.flush();
+
+        log.info(employee.toString());
+        log.info(employee2.toString());
+
+        Employe employeBDD = employeRepository.findByEmailJPQL("nTest@campus-eni.fr");
+
+        assertThat(employeBDD).isNotNull();
+        assertThat(employeBDD).isEqualTo(employee);
+
+    }
 
 
 }
