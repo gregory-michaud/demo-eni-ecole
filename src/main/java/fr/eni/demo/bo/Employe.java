@@ -34,7 +34,7 @@ public class Employe {
 
 
     @Column(name = "LAST_NAME",  nullable = false,  length = 90)
-    @NotBlank
+    @NotBlank(message = "{employee.ln.blank-error}")
     @Size(max = 90)
     private String nom;
 
@@ -68,7 +68,7 @@ public class Employe {
 
     @ManyToOne
     @JoinColumn(name = "CIVILITY_ID")
-    @NotNull
+    @NotNull(message = "{employee.civility.error}")
     private Civilite civilite;
 
 }
