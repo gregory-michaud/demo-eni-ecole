@@ -185,7 +185,7 @@ public class TestEmployeService {
         when(employeRepository.findById(id)).thenReturn(Optional.of(employe));
 
         //Comportemnet à valider
-        employeService.ajouter(employe, adresse);
+        employeService.ajouterEmploye(employe, adresse);
 
         // Vérification de l'ajout dans la liste des employés
         Optional<Employe> employeDB = employeRepository.findById(id);
@@ -223,7 +223,7 @@ public class TestEmployeService {
 
 
         //Comportement à valider
-        assertThrows(RuntimeException.class, ()->employeService.ajouter(employe, adresse)) ;
+        assertThrows(RuntimeException.class, ()->employeService.ajouterEmploye(employe, adresse)) ;
 
         // Vérification de l'ajout dans la liste des employés
         List<Employe> employesDB = employeRepository.findAll();
